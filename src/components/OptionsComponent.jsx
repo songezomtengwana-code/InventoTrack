@@ -3,8 +3,11 @@ import React from 'react'
 import { theme } from '../utils/theme'
 import UpcScan from 'react-native-bootstrap-icons/icons/upc-scan'
 import Search from 'react-native-bootstrap-icons/icons/search'
+import { useNavigation } from '@react-navigation/native'
+import PlusCircleFill from 'react-native-bootstrap-icons/icons/plus-circle-fill'
 
 export default function OptionsComponent() {
+    const navigation = useNavigation()
 
     const options = [
         {
@@ -20,10 +23,13 @@ export default function OptionsComponent() {
     ]
 
     return (
-        <ScrollView horizontal={true} style={{gap: 20, marginBottom: 15}}>
+        <ScrollView horizontal={true} style={{ gap: 20, marginBottom: 15 }}>
             <Pressable
                 android_ripple={{ color: theme.grey }}
                 style={styles.button}
+                onPress={() => {
+                    navigation.navigate('barcode_scanner')
+                }}
             >
                 <UpcScan fill={theme.third} />
                 <Text style={styles.text}>Scan to find</Text>
@@ -31,9 +37,12 @@ export default function OptionsComponent() {
             <Pressable
                 android_ripple={{ color: theme.grey }}
                 style={styles.button}
+                onPress={() => {
+                    navigation.navigate('add_store')
+                }}
             >
-                <Search fill={theme.third} />
-                <Text style={styles.text}>Search to find </Text>
+                <PlusCircleFill fill={theme.third} />
+                <Text style={styles.text}>Add A New Store </Text>
             </Pressable>
         </ScrollView>
     )

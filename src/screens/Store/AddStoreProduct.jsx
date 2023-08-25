@@ -7,6 +7,7 @@ import { scanImage } from '../../services/scanner'
 import { add_to_storage, auth, firebaseAuth, uuid } from '../../services/firebase'
 import { useNavigation } from '@react-navigation/native'
 import { uploadToInventory } from '../../services/StoresServices'
+import UpcScan from 'react-native-bootstrap-icons/icons/upc-scan'
 
 export default function AddStoreProduct({ route }) {
     const { store_id } = route.params
@@ -148,17 +149,23 @@ export default function AddStoreProduct({ route }) {
                             label={inputs[0].label}
                             onChangeText={(text) => { setName(text) }}
                         />
+                        <View style={styles.pair}>
+                            <TextInput
+                                style={styles.input}
+                                mode='outlined'
+                                inputMode={inputs[1]?.type}
+                                outlineColor={theme.primary}
+                                activeOutlineColor={theme.primary}
+                                editable={inputs[1].editable}
+                                value={inputs[1].value}
+                                label={inputs[1].label}
+                                onChangeText={(text) => { setBarcode(text) }}
+                            />
+                            <Pressable style={styles.pair_button} >
+                                <UpcScan fill={theme.primary} />
+                            </Pressable>
+                        </View>
                         <TextInput
-                            style={styles.input}
-                            mode='outlined'
-                            inputMode={inputs[1]?.type}
-                            outlineColor={theme.primary}
-                            activeOutlineColor={theme.primary}
-                            editable={inputs[1].editable}
-                            value={inputs[1].value}
-                            label={inputs[1].label}
-                            onChangeText={(text) => { setBarcode(text) }}
-                        /><TextInput
                             style={styles.input}
                             mode='outlined'
                             inputMode={inputs[2]?.type}
@@ -309,3 +316,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     }
 })
+
+/**
+ * @WARNING This one is dead you pussiooooooo
+ */

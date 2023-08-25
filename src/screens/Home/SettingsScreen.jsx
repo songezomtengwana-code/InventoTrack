@@ -93,7 +93,7 @@ const SettingsScreen = () => {
             <View style={styles.spacer}></View>
 
             <Text style={[styles.section_header, {color: theme.secondary}]}>Exit</Text>
-            <Pressable android_ripple={{ color: theme.primary_transparent, }} onPress={() => { }} style={styles.option}>
+            <Pressable android_ripple={{ color: theme.primary_transparent, }} onPress={() => { signOut(navigation) }} style={styles.option}>
                 <View style={styles.horizontal}>
                     <BoxArrowRight fill={theme.secondary} />
                     <Text style={{ color: theme.secondary, fontSize: 16 }}>Log out</Text>

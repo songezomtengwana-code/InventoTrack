@@ -7,16 +7,15 @@ import { useNavigation } from '@react-navigation/native';
 // icons
 import ThreeDots from 'react-native-bootstrap-icons/icons/exclamation-circle'
 import { environments } from '../utils/environment';
-import { Button, Divider, Menu, Modal, PaperProvider, Portal } from 'react-native-paper';
+import { Button, Divider, Menu, Modal, PaperProvider, Portal, Searchbar } from 'react-native-paper';
 import ExclamationCircle from 'react-native-bootstrap-icons/icons/exclamation-circle-fill';
 import StockTrackerBadges from './StockTrackerBadges';
 export default function ProductCard({ inventory, id }) {
     const iconScale = 1
     const navigation = useNavigation()
-
+    const [searchQuery, setSearchQuery] = React.useState('');
     const [visible, setVisible] = React.useState(false);
-
-    const showModal = () => setVisible(true);
+    const showModal = () => setVisible(true)
     const hideModal = () => setVisible(false);
     const containerStyle = { backgroundColor: 'white', padding: 20 };
 
@@ -33,7 +32,7 @@ export default function ProductCard({ inventory, id }) {
                 >
                     {inventory?.map((product) => {
                         return (
-                            <Pressable key={product.id} style={styles.button} android_ripple={{ color: theme.grey }} onPress={() => { navigation.navigate('update_store_product', { product: product, id: id }) }}>
+                            <Pressable key={product.id} style={styles.button} android_ripple={{ color: theme.grey }} onPress={() => { navigation.navigate('update_store_product', { product: product, id: id }) }} >
                                 <View style={styles.card} key={product.id}>
                                     <View style={styles.horizontal}>
                                         {product.imageurl ? <Image source={{ uri: product.imageurl }} style={styles.prouct_image} /> : <Image source={{ uri: environments.product_placeholder }} style={styles.prouct_image} />}
@@ -42,8 +41,11 @@ export default function ProductCard({ inventory, id }) {
                                             <Text style={styles.info}>{product.quantity} in stock</Text>
                                         </View>
                                     </View>
+                                    <View>
+                                        {product.quantity < 50 ? <ExclamationCircle fill='#eb6b34' style={{ marginLeft: 'auto' }} scaleX={iconScale} scaleY={iconScale} /> : <></>}
+                                    </View>
                                 </View>
-                                <StockTrackerBadges stockValue={product.quantity} />
+                                {/* <StockTrackerBadges stockValue={product.quantity} /> */}
                             </Pressable>
 
                         )
@@ -51,7 +53,7 @@ export default function ProductCard({ inventory, id }) {
                 </View>
                 <Portal >
                     <Modal dismissableBackButton={true} visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                        <Text style={{ color: theme.primary }}>Example Modal.  Click outside this area to dismiss.</Text>
+                        <Text style={{ color: theme.primary }}>Example Modal. Click outside this area to dismiss.</Text>
                     </Modal>
                 </Portal>
             </PaperProvider>
@@ -65,6 +67,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        width: '100%'
     },
     name: {
         color: theme.text_dark,
@@ -127,7 +130,8 @@ const styles = StyleSheet.create({
         width: windowWidth - 50,
         backgroundColor: theme.background,
         marginVertical: 10,
-        borderRadius: 5
+        borderRadius: 5,
+        elevation: 2
     },
     noti: {
         marginHorizontal: 15,
@@ -136,5 +140,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 25
     },
-    
+    seachbar_container: {
+        paddingHorizontal: 25,
+        paddingVertical: 10
+    },
+    searchbar: {
+        backgroundColor: theme.background,
+        borderWidth: 2,
+        color: theme.primary
+    }
 })

@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { default as CaretRightFill } from "react-native-bootstrap-icons/icons/caret-right-fill"
 import { View } from "react-native-ui-lib"
-import { activeBusinessAccount, firebaseAuth, get_stores } from '../services/firebase'
+import { activeBusinessAccount, db, firebaseAuth, get_stores } from '../services/firebase'
 import { useNavigation } from '@react-navigation/native'
 import Mailbox from 'react-native-bootstrap-icons/icons/mailbox'
 import Building from 'react-native-bootstrap-icons/icons/building'
@@ -17,9 +17,6 @@ export default function StoreStatisticsButton() {
     const [storesValue, setStoresValue] = React.useState(0)
 
     useEffect(() => {
-        setStoresValue(get_stores())
-        console.log(storesValue)
-        getStoresCount()
     }, [])
 
     const statistics = [
@@ -27,15 +24,24 @@ export default function StoreStatisticsButton() {
             id: 1,
             name: "Stores",
             route: "stores",
-            value: get_stores.length
-        },
-        {
-            id: 2,
-            name: "Inventories",
-            route: "",
-            value: get_stores.length
-        },
+            value: 1
+        },  
     ]
+
+    function get_stores_count() {
+        const uid = firebaseAuth.currentUser.uid;
+        const clientsCollectionRef = db.collection(' clients');
+        const storesCollectionRef = clientsCollectionRef.doc(uid).collection('stores');
+    
+        storesCollectionRef.get().then((querySnapshot) => {
+            const numberOfDocuments = querySnapshot.size;
+            setStoresValue(querySnapshot)
+        }).catch((error) => {
+            console.error("Error getting subcollection documents: ", error);
+            return "NaN"
+        });
+    
+    }
 
     return (
         <View style={{ paddingTop: 10 }}>

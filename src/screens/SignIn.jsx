@@ -27,7 +27,7 @@ const SignIn = () => {
     signin(email, password, navigation);
     setTimeout(() => {
       setLoading(false)
-    }, 15000);
+    }, 50000);
   }
 
   useEffect(() => {

@@ -181,7 +181,7 @@ export async function get_stores() {
     if (snapshot.exists()) {
       stores.push(snapshot.data())
       const s = stores[0].stores;
-      return s;
+      return s.length;
     } else {
       console.log('error collecting the stores');
       return;
@@ -266,4 +266,4 @@ export async function firebaseUploadProductImage(uri, branch) {
   console.log('image added.')
 };
 
-export { authResponse, user, firebaseAuth, auth, activeBusinessAccount, inventory, db, storageDB }
+export { authResponse, user, firebaseAuth, auth, activeBusinessAccount, inventory, db, storageDB } 

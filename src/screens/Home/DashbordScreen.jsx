@@ -22,7 +22,7 @@ const DashbordScreen = () => {
                 <View style={styles.body}>
                     <OptionsComponent />
                     <Text style={styles.header_title}>Statistics</Text>
-                    <CreateStoreButton />
+                  
                 </View>
             </ScrollView>
         </>

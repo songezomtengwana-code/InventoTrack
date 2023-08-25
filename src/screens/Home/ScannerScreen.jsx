@@ -1,7 +1,7 @@
-import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { theme, windowWidth } from '../../utils/theme'
-import { TextInput } from 'react-native-paper'
+import { theme, windowHeight, windowWidth } from '../../utils/theme'
+import { Button, Modal, PaperProvider, Portal, TextInput } from 'react-native-paper'
 import { launchCamera } from 'react-native-image-picker'
 import { firebaseUploadProductImage, uuid } from '../../services/firebase'
 import { useNavigation } from '@react-navigation/native'
@@ -10,9 +10,16 @@ import LoadingComponent from '../../components/LoadingComponent'
 // icons
 import Camera from 'react-native-bootstrap-icons/icons/camera';
 import { uploadToInventory } from '../../services/StoresServices'
+import UpcScan from 'react-native-bootstrap-icons/icons/upc-scan'
+import NewProductModal from '../../components/NewProductModal'
 
 function ScannerScreen({ route }) {
     const { branchName, store_id } = route.params;
+    const [visible, setVisible] = React.useState(false);
+
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+    const containerStyle = { backgroundColor: '#00000030', paddingVertical: 30, paddingHorizontal: 25 };
 
     const navigation = useNavigation()
     const [name, setName] = React.useState('');
@@ -107,7 +114,7 @@ function ScannerScreen({ route }) {
         barcode: barcode,
         quantity: quantity,
         price: price,
-        imageurl: productImage,
+        imageurl: image,
         location: {
             aisle: aisle,
             shelf: shelf
@@ -120,128 +127,154 @@ function ScannerScreen({ route }) {
         if (!name || !category || !quantity || !price || !barcode || !aisle || !shelf) {
             setDisable(true)
             console.log('disable: ' + disabled);
+            Alert.alert('Missing Information', 'Please make sure to fill in all of the fields')
         } else {
-            setLoading(true)
-            uploadToInventory(store_id, product, navigation)
+            showModal()
         }
     }
-
-    useEffect(() => {
-    })
 
     return (
         <ScrollView>
             {loading ? <LoadingComponent text="Adding New Product..." /> : <></>}
-            <View style={styles.screen}>
-                {/* <View style={styles.options}>
-                    <TouchableOpacity style={styles.button} onPress={upload_product_image}>
-                        <Camera fill={theme.third} />
-                        <Text style={styles.text}>Take Product Picture</Text>
-                    </TouchableOpacity>
-                </View> */}
-                {
-                    visiblity ? <View>
-                        <Text style={styles.subtitle}>Additional Information</Text>
-                        <TextInput
-                            key={inputs[0].key}
-                            style={styles.input}
-                            mode='outlined'
-                            inputMode={inputs[0]?.type}
-                            outlineColor={theme.primary}
-                            activeOutlineColor={theme.primary}
-                            editable={inputs[0].editable}
-                            value={inputs[0].value}
-                            label={inputs[0].label}
-                            onChangeText={(text) => { setName(text) }}
-                        />
-                        <TextInput
-                            key={inputs[1].key}
-                            style={styles.input}
-                            mode='outlined'
-                            inputMode={inputs[1]?.type}
-                            outlineColor={theme.primary}
-                            activeOutlineColor={theme.primary}
-                            editable={inputs[1].editable}
-                            value={inputs[1].value}
-                            label={inputs[1].label}
-                            onChangeText={(text) => { setBarcode(text) }}
-                        /><TextInput
-                            key={inputs[2].key}
-                            style={styles.input}
-                            mode='outlined'
-                            inputMode={inputs[2]?.type}
-                            outlineColor={theme.primary}
-                            activeOutlineColor={theme.primary}
-                            editable={inputs[2].editable}
-                            value={inputs[2].value}
-                            label={inputs[2].label}
-                            onChangeText={(text) => { setDescription(text) }}
-                        /><TextInput
-                            key={inputs[3].key}
-                            style={styles.input}
-                            mode='outlined'
-                            inputMode={inputs[3]?.type}
-                            outlineColor={theme.primary}
-                            activeOutlineColor={theme.primary}
-                            editable={inputs[3].editable}
-                            value={inputs[3].value}
-                            label={inputs[3].label}
-                            onChangeText={(text) => { setCategory(text) }}
-                        /><TextInput
-                            key={inputs[4].key}
-                            style={styles.input}
-                            mode='outlined'
-                            inputMode={inputs[4]?.type}
-                            outlineColor={theme.primary}
-                            activeOutlineColor={theme.primary}
-                            editable={inputs[4].editable}
-                            value={inputs[4].value}
-                            label={inputs[4].label}
-                            onChangeText={(text) => { setQuantity(text) }}
-                        /><TextInput
-                            key={inputs[5].key}
-                            style={styles.input}
-                            mode='outlined'
-                            inputMode={inputs[5]?.type}
-                            outlineColor={theme.primary}
-                            activeOutlineColor={theme.primary}
-                            editable={inputs[5].editable}
-                            value={inputs[5].value}
-                            label={inputs[5].label}
-                            onChangeText={(text) => { setPrice(text) }}
-                        />
-                        <Text style={styles.subtitle}>Location</Text>
+            <PaperProvider>
+                <View style={styles.screen}>
+                    <Text style={styles.title}>Add a new product</Text>
+                    {/* <View style={styles.options}>
+                        <TouchableOpacity style={styles.button} onPress={upload_product_image}>
+                            <Camera fill={theme.third} />
+                            <Text style={styles.text}>Take Product Picture</Text>
+                        </TouchableOpacity>
+                    </View> */}
+                    
+                    {
+                        visiblity ? <View>
+                            <TextInput
+                                key={inputs[0].key}
+                                style={styles.input}
+                                mode='outlined'
+                                inputMode={inputs[0]?.type}
+                                outlineColor={theme.primary}
+                                textColor={theme.text_dark}
+                                activeOutlineColor={theme.primary}
+                                editable={inputs[0].editable}
+                                value={inputs[0].value}
+                                label={inputs[0].label}
+                                onChangeText={(text) => { setName(text) }}
+                            />
+                            <TextInput
+                                key={inputs[2].key}
+                                style={styles.input}
+                                mode='outlined'
+                                inputMode={inputs[2]?.type}
+                                outlineColor={theme.primary}
+                                textColor={theme.text_dark}
+                                activeOutlineColor={theme.primary}
+                                editable={inputs[2].editable}
+                                value={inputs[2].value}
+                                label={inputs[2].label}
+                                onChangeText={(text) => { setDescription(text) }}
+                                multiline={true}
+                                numberOfLines={5}
 
-                        <View style={styles.location}>
-                            <TextInput
-                                key={location[0].key}
-                                style={styles.input_location}
-                                mode='outlined'
-                                outlineColor={theme.primary}
-                                activeOutlineColor={theme.primary}
-                                editable={location[0].editable}
-                                value={location[0].value}
-                                label={location[0].label}
-                                onChangeText={(text) => { setAisle(text) }}
                             />
+                            <View style={styles.pair}>
+                                <TextInput
+                                    style={[styles.input, { width: '80%', margin: 0 }]}
+                                    mode='outlined'
+                                    inputMode={inputs[1]?.type}
+                                    outlineColor={theme.primary}
+                                    textColor={theme.text_dark}
+                                    activeOutlineColor={theme.primary}
+                                    editable={inputs[1].editable}
+                                    value={inputs[1].value}
+                                    label={inputs[1].label}
+                                    onChangeText={(text) => { setBarcode(text) }}
+                                />
+                                <Pressable style={styles.pair_button} android_ripple={{ color: theme.grey }} onPress={() => {
+                                    navigation.navigate('add_product_scanner')
+                                }}>
+                                    <UpcScan fill={theme.primary} />
+                                </Pressable>
+                            </View>
                             <TextInput
-                                key={location[1].key}
-                                style={styles.input_location}
+                                key={inputs[3].key}
+                                style={styles.input}
                                 mode='outlined'
+                                inputMode={inputs[3]?.type}
                                 outlineColor={theme.primary}
+                                textColor={theme.text_dark}
                                 activeOutlineColor={theme.primary}
-                                editable={location[1].editable}
-                                value={location[1].value}
-                                label={location[1].label}
-                                onChangeText={(text) => { setShelf(text) }}
+                                editable={inputs[3].editable}
+                                value={inputs[3].value}
+                                label={inputs[3].label}
+                                onChangeText={(text) => { setCategory(text) }}
                             />
-                        </View>
-                        <Pressable android_ripple={{ color: theme.grey }} style={styles.submit} onPress={submit} >
-                            <Text style={{ color: theme.background }}>Submit</Text>
-                        </Pressable>
-                    </View> : <></>
-                }
-            </View>
+                            <Text style={styles.subtitle}>Location</Text>
+                            <View style={styles.location}>
+                                <TextInput
+                                    key={location[0].key}
+                                    style={styles.input_location}
+                                    mode='outlined'
+                                    outlineColor={theme.primary}
+                                    textColor={theme.text_dark}
+                                    activeOutlineColor={theme.primary}
+                                    editable={location[0].editable}
+                                    label={location[0].label}
+                                    onChangeText={(text) => { setAisle(text) }}
+                                />
+                                <TextInput
+                                    key={location[1].key}
+                                    style={styles.input_location}
+                                    mode='outlined'
+                                    outlineColor={theme.primary}
+                                    textColor={theme.text_dark}
+                                    activeOutlineColor={theme.primary}
+                                    editable={location[1].editable}
+                                    value={location[1].value}
+                                    label={location[1].label}
+                                    onChangeText={(text) => { setShelf(text) }}
+                                />
+                            </View>
+                            <View style={styles.location}>
+                                <TextInput
+                                    key={inputs[4].key}
+                                    style={styles.input_location}
+                                    mode='outlined'
+                                    inputMode={inputs[4]?.type}
+                                    outlineColor={theme.primary}
+                                    textColor={theme.text_dark}
+                                    activeOutlineColor={theme.primary}
+                                    editable={inputs[4].editable}
+                                    value={inputs[4].value}
+                                    label={inputs[4].label}
+                                    onChangeText={(text) => { setQuantity(text) }}
+                                /><TextInput
+                                    key={inputs[5].key}
+                                    style={styles.input_location}
+                                    mode='outlined'
+                                    inputMode={inputs[5]?.type}
+                                    outlineColor={theme.primary}
+                                    textColor={theme.text_dark}
+                                    activeOutlineColor={theme.primary}
+                                    editable={inputs[5].editable}
+                                    value={inputs[5].value}
+                                    label={inputs[5].label}
+                                    onChangeText={(text) => { setPrice(text) }}
+                                />
+                            </View>
+
+                            <Pressable android_ripple={{ color: theme.light }} style={styles.submit} onPress={submit} onLongPress={showModal} >
+                                <Text style={{ color: theme.background }}>Complete</Text>
+                            </Pressable>
+                        </View> : <></>
+                    }
+                    <Portal>
+                        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                            <NewProductModal product={product} sid={store_id} />
+                        </Modal>
+                    </Portal>
+                </View>
+            </PaperProvider>
         </ScrollView>
     )
 }
@@ -252,14 +285,14 @@ const styles = StyleSheet.create({
     screen: {
         padding: 25,
         flexDirection: 'column',
-        gap: 10
+        gap: 10,
+        minHeight: windowHeight - 2.5
     },
     title: {
         fontSize: 28,
         fontWeight: 'bold',
-        textAlign: 'center',
         color: theme.text_dark,
-        marginBottom: 25
+        marginBottom: 20
     },
     button: {
         padding: 15,
@@ -269,7 +302,6 @@ const styles = StyleSheet.create({
         borderColor: theme.text_dark_faint,
         marginBottom: 15,
         borderRadius: 5,
-        alignItems: 'center'
     },
     icon: {
         width: 22.5,
@@ -286,7 +318,8 @@ const styles = StyleSheet.create({
     },
     input: {
         backgroundColor: theme.background,
-        marginBottom: 18
+        marginBottom: 18,
+        color: theme.text_dark
     },
     input_location: {
         minWidth: windowWidth - 240,
@@ -308,5 +341,19 @@ const styles = StyleSheet.create({
     submit_text: {
         color: theme.text_light,
         fontWeight: '600',
+    },
+    pair: {
+        flexDirection: 'row',
+        gap: 15,
+        justifyContent: 'space-between',
+    },
+    pair_button: {
+        width: '15%',
+        height: 50,
+        borderRadius: 5,
+        borderColor: theme.primary,
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 })

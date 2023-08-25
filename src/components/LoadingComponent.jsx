@@ -32,7 +32,7 @@ const LoadingComponent = ({ text }) => {
             borderRadius: 5
           }}>
             <Text style={{ color: theme.background, fontSize: 14 }}>An error occured</Text>
-            <Button onPress={() => { navigation.goBack() }} textColor={theme.background} buttonColor={theme.secondary} style={{ borderRadius: 5 }}>Go Back</Button>
+            {/* <Button onPress={() => { navigation.goBack() }} textColor={theme.background} buttonColor={theme.secondary} style={{ borderRadius: 5 }}>Go Back</Button> */}
           </View>
           : <></>
       }

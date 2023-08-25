@@ -29,7 +29,7 @@ const CreateAccount = () => {
     createaccount(email, password, name, navigation);
     setTimeout(() => {
       setLoading(false)
-    }, 1500)
+    }, 15000)
   }
 
   useEffect(() => {

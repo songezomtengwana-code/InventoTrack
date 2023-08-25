@@ -9,7 +9,7 @@ export async function getStoresCount() {
 
     storeCollectionSnapshot.forEach((storeDoc) => {
         if (storeDoc.exists) {
-            console.log({ count: storeDoc })
+            console.log({ count: storeDoc.data() })
         } else {
             console.log('boom');
         }
@@ -101,6 +101,11 @@ export async function get_single_store_product(sid) {
     return storeRef.get()
 }
 
+/**
+ * @param {*} iid 
+ * @param {*} navigation 
+ * @param {*} sid 
+ */
 export async function delete_store_product(iid, sid, navigation) {
     const businessId = firebaseAuth.currentUser.uid;
     const storeId = sid;
@@ -112,13 +117,30 @@ export async function delete_store_product(iid, sid, navigation) {
 
     // Delete the item from the array
     inventoryRef.update({
-        inventory: arrayRemove(itemIdToDelete)
+        inventory: arrayRemove({ id: itemIdToDelete })
     })
         .then(() => {
             console.log('Item deleted from the array successfully');
             navigation.goBack()
+            console.log(itemIdToDelete, storeId, businessId)
         })
         .catch((error) => {
             console.error('Error deleting item from array:', error);
         });
+}
+
+export async function get_stores_count(uid) {
+
+    const clientsCollectionRef = db.collection(' clients');
+    const storesCollectionRef = clientsCollectionRef.doc(uid).collection('stores');
+
+    storesCollectionRef.get().then((querySnapshot) => {
+        const numberOfDocuments = querySnapshot.size;
+        // console.log(`Number of documents in subcollection: ${numberOfDocuments}`);
+        return numberOfDocuments
+    }).catch((error) => {
+        console.error("Error getting subcollection documents: ", error);
+        return "NaN"
+    });
+
 }

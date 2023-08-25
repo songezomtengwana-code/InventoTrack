@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { theme } from '../../utils/theme';
@@ -10,6 +10,7 @@ import UpcScan from 'react-native-bootstrap-icons/icons/upc-scan';
 import ProductCard from '../../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
 import { db, firebaseAuth } from '../../services/firebase';
+import Search from 'react-native-bootstrap-icons/icons/search';
 
 export default function StoreDashboard({ route }) {
   const { store } = route.params
@@ -97,7 +98,12 @@ export default function StoreDashboard({ route }) {
           </View>
 
           <View style={styles.body}>
-            <Text style={styles.title}>Products</Text>
+            <View style={styles.space_between}>
+              <Text style={styles.title}>Products</Text>
+              <TouchableOpacity style={styles.space_between_button} onPress={() => { navigation.navigate('search_store_product') }}>
+                <Search fill={theme.primary} />
+              </TouchableOpacity>
+            </View>
             {
               fetching ? <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 50 }}>
                 <Text>Nothing in the inventory</Text>
@@ -153,8 +159,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '600',
-    marginHorizontal: 25,
     color: theme.text_dark,
     marginVertical: 15
+  },
+  space_between: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 25
+  },
+  space_between_button: {
+    padding: 5
   }
 })
