@@ -1,6 +1,6 @@
 # InventoTrack 📦
 
-![App Logo](./src/images/logo_light.png)
+![App Logo](<img src="/src/images/logo_light.png" alt="image" width="300" height="auto">)
 
 ZOFS InventoTrack App is a user-friendly tool designed to help businesses efficiently manage their inventory. Whether you're running a retail store, a warehouse, or any other business that deals with products, this app simplifies the process of tracking and organizing inventory.
 
