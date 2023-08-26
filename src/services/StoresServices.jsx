@@ -44,7 +44,7 @@ export async function uploadToInventory(store_id, config, navigation) {
         const businessRef = db.collection('clients').doc(buid);
         const storeRef = businessRef.collection('stores').doc(store_id);
 
-        await storeRef.update({ inventory: arrayUnion(config) });
+        await storeRef.update({ inventory: arrayUnion(config) })
 
         console.log('Inventory updated successfully.');
         navigation.navigate('stores')

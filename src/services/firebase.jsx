@@ -5,7 +5,7 @@ import 'firebase/storage'
 import { getAuth, onAuthStateChanged, sendEmailVerification } from 'firebase/auth';
 import { getFirestore, setDoc, doc, arrayUnion, getDoc, } from 'firebase/firestore';
 import { Alert } from 'react-native';
-import { getStorage, ref } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { updateLoginLogs } from './authentication/update-logs';
 
 const firebaseConfig = {
@@ -264,6 +264,26 @@ export async function firebaseUploadProductImage(uri, branch) {
     console.log('no image uploaded ke kodak black - versatile');
   }
   console.log('image added.')
+};
+
+/**
+ * @param {*} imageUri contains a uri to the location where the image is situated
+ */
+export async function upload_store_product_image(imageUri) {
+  if (imageUri) {
+    const response = await fetch(imageUri);
+    const blob = await response.blob();
+    const filename = imageUri.substring(imageUri.lastIndexOf('/') + 1);
+
+    const ref = firebase.storage(app).ref().child(`inventory/${Date.now()}${filename}`);
+    await ref.put(blob);
+
+    // Get the image download URL
+    const imageUrl = await ref.getDownloadURL();
+    console.log('Image URL:', imageUrl);
+
+    // You can save the imageURL to a database or use it in your app
+  }
 };
 
 export { authResponse, user, firebaseAuth, auth, activeBusinessAccount, inventory, db, storageDB } 

@@ -71,7 +71,8 @@ export default function NewProductModal({ product, sid }) {
                                 android_ripple={{ color: theme.grey }}
                                 style={styles.edit_button}
                                 onPress={() => {
-                                   uploadToInventory(sid, product, navigation)
+                                   setVisible(true)
+                                    uploadToInventory(sid, product, navigation)
                                 }}
                             >
                                 <Pen fill={theme.primary} />

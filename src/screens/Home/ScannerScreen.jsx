@@ -1,17 +1,17 @@
-import { Alert, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { theme, windowHeight, windowWidth } from '../../utils/theme'
 import { Button, Modal, PaperProvider, Portal, TextInput } from 'react-native-paper'
 import { launchCamera } from 'react-native-image-picker'
-import { firebaseUploadProductImage, uuid } from '../../services/firebase'
+import { firebaseUploadProductImage, upload_store_product_image, uuid } from '../../services/firebase'
 import { useNavigation } from '@react-navigation/native'
 import LoadingComponent from '../../components/LoadingComponent'
 
 // icons
-import Camera from 'react-native-bootstrap-icons/icons/camera';
-import { uploadToInventory } from '../../services/StoresServices'
+import Camera from 'react-native-bootstrap-icons/icons/camera-fill'
 import UpcScan from 'react-native-bootstrap-icons/icons/upc-scan'
 import NewProductModal from '../../components/NewProductModal'
+import { environments } from '../../utils/environment'
 
 function ScannerScreen({ route }) {
     const { branchName, store_id } = route.params;
@@ -32,8 +32,8 @@ function ScannerScreen({ route }) {
     const [shelf, setShelf] = React.useState('');
     const [disabled, setDisable] = React.useState(false);
     const [visiblity, setVisiblity] = React.useState(true)
-    const [response, setResponse] = React.useState(undefined)
-    const [image, setImage] = React.useState('https://firebasestorage.googleapis.com/v0/b/pbms-7591f.appspot.com/o/assets%2Fsystem-solid-18-autorenew.gif?alt=media&token=8a6d8601-33b2-43ac-8818-dead451a1974')
+    const [response, setResponse] = React.useState(null)
+    const [image, setImage] = React.useState(environments.product_placeholder)
     const [uid, setUid] = React.useState(null)
     const [productImage, setProductImage] = React.useState(null)
     const [loading, setLoading] = useState(false)
@@ -103,7 +103,7 @@ function ScannerScreen({ route }) {
         }, setResponse)
         const source = result.assets[0].uri
         setImage(source)
-        firebaseUploadProductImage(source, branchName)
+        upload_store_product_image(source)
     }
 
     const product = {
@@ -139,13 +139,25 @@ function ScannerScreen({ route }) {
             <PaperProvider>
                 <View style={styles.screen}>
                     <Text style={styles.title}>Add a new product</Text>
-                    {/* <View style={styles.options}>
+                    <View style={styles.options}>
                         <TouchableOpacity style={styles.button} onPress={upload_product_image}>
                             <Camera fill={theme.third} />
                             <Text style={styles.text}>Take Product Picture</Text>
                         </TouchableOpacity>
-                    </View> */}
-                    
+                    </View>
+                    {response?.assets &&
+                        response?.assets.map(image => (
+                            <View key={image.uri}>
+                                <View style={styles.image}>
+                                    <Image
+                                        resizeMode="cover"
+                                        resizeMethod="scale"
+                                        style={{ width: 150, height: 150 }}
+                                        source={{ uri: image.uri }}
+                                    />
+                                </View>
+                            </View>
+                        ))}
                     {
                         visiblity ? <View>
                             <TextInput
@@ -155,6 +167,7 @@ function ScannerScreen({ route }) {
                                 inputMode={inputs[0]?.type}
                                 outlineColor={theme.primary}
                                 textColor={theme.text_dark}
+                                placeholderTextColor={theme.primary}
                                 activeOutlineColor={theme.primary}
                                 editable={inputs[0].editable}
                                 value={inputs[0].value}
@@ -168,6 +181,7 @@ function ScannerScreen({ route }) {
                                 inputMode={inputs[2]?.type}
                                 outlineColor={theme.primary}
                                 textColor={theme.text_dark}
+                                placeholderTextColor={theme.primary}
                                 activeOutlineColor={theme.primary}
                                 editable={inputs[2].editable}
                                 value={inputs[2].value}
@@ -184,6 +198,7 @@ function ScannerScreen({ route }) {
                                     inputMode={inputs[1]?.type}
                                     outlineColor={theme.primary}
                                     textColor={theme.text_dark}
+                                    placeholderTextColor={theme.primary}
                                     activeOutlineColor={theme.primary}
                                     editable={inputs[1].editable}
                                     value={inputs[1].value}
@@ -203,6 +218,7 @@ function ScannerScreen({ route }) {
                                 inputMode={inputs[3]?.type}
                                 outlineColor={theme.primary}
                                 textColor={theme.text_dark}
+                                placeholderTextColor={theme.primary}
                                 activeOutlineColor={theme.primary}
                                 editable={inputs[3].editable}
                                 value={inputs[3].value}
@@ -217,6 +233,7 @@ function ScannerScreen({ route }) {
                                     mode='outlined'
                                     outlineColor={theme.primary}
                                     textColor={theme.text_dark}
+                                    placeholderTextColor={theme.primary}
                                     activeOutlineColor={theme.primary}
                                     editable={location[0].editable}
                                     label={location[0].label}
@@ -228,6 +245,7 @@ function ScannerScreen({ route }) {
                                     mode='outlined'
                                     outlineColor={theme.primary}
                                     textColor={theme.text_dark}
+                                    placeholderTextColor={theme.primary}
                                     activeOutlineColor={theme.primary}
                                     editable={location[1].editable}
                                     value={location[1].value}
@@ -243,6 +261,7 @@ function ScannerScreen({ route }) {
                                     inputMode={inputs[4]?.type}
                                     outlineColor={theme.primary}
                                     textColor={theme.text_dark}
+                                    placeholderTextColor={theme.primary}
                                     activeOutlineColor={theme.primary}
                                     editable={inputs[4].editable}
                                     value={inputs[4].value}
@@ -255,6 +274,7 @@ function ScannerScreen({ route }) {
                                     inputMode={inputs[5]?.type}
                                     outlineColor={theme.primary}
                                     textColor={theme.text_dark}
+                                    placeholderTextColor={theme.primary}
                                     activeOutlineColor={theme.primary}
                                     editable={inputs[5].editable}
                                     value={inputs[5].value}
