@@ -1,5 +1,6 @@
 import { arrayUnion, doc, getDoc, updateDoc, addDoc, arrayRemove } from "firebase/firestore";
 import { db, firebaseAuth } from "./firebase";
+import * as Notifications from 'expo-notifications';
 
 export async function getStoresCount() {
     const uid = firebaseAuth.currentUser.uid
@@ -54,7 +55,7 @@ export async function uploadToInventory(store_id, config, navigation) {
     }
 }
 
-export async function update_store_product(sid, pid, price, quantity) {
+export async function update_store_product(sid, pid, price, quantity, name) {
     const businessId = firebaseAuth.currentUser.uid;
     const storeId = sid;
     const businessRef = db.collection('clients').doc(businessId);
@@ -66,9 +67,25 @@ export async function update_store_product(sid, pid, price, quantity) {
             if (documentSnapshot.exists) {
                 const responseData = documentSnapshot.data();
                 const itemsArray = responseData.inventory; // Assuming your array field is named 'items'
-
+                const stockNotificationProperties = {
+                    title: "Stock Quantity",
+                    body: `${name}'s stock is lower than the set threshold, please make sure you check it out`,
+                    data: { data: 'goes here', route: 'stores' },
+                }
                 // Find the index of the item you want to update
                 const itemIndexToUpdate = itemsArray.findIndex((item) => item.id === pid);
+
+                if (quantity < 50) {
+                    console.log('stock quantity is not safe');
+
+                    Notifications.scheduleNotificationAsync({
+                        content: stockNotificationProperties,
+                        trigger: { seconds: 2 },
+                    });
+
+                } else {
+                    console.log('stock quantity is safe');
+                }
 
                 if (itemIndexToUpdate !== -1) {
                     itemsArray[itemIndexToUpdate] = {
