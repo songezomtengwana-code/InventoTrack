@@ -27,11 +27,11 @@ ZOFS InventoTrack App is a user-friendly tool designed to help businesses effici
 ## Screenshots
 
 ### Dashboard
-<img src="./src/images/readme/dashboard.png" alt="image" width="150" height="375">
+<img src="./src/images/readme/dashboard.png" alt="image" width="150" height="400">
 
 
 ### Product Listings
-![Product Listings](./src/images/readme/store_dashboard.png)
+<img src="./src/images/readme/store_dashboard.png" alt="image" width="150" height="400">
 
 ### Search and Filtering
 ![Search and Filtering](./src/images/readme/search.png)
