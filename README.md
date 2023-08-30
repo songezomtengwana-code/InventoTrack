@@ -26,21 +26,20 @@ ZOFS InventoTrack App is a user-friendly tool designed to help businesses effici
 
 ## Screenshots
 
-### Dashboard
-<img src="./src/images/readme/dashboard.png" alt="image" width="150" height="400">
+### User Authentication 👷‍♂️👷‍♀️
+<img src="./src/images/readme/signin.png" alt="image" width="155" height="350">
 
+### Overview 📋
+<img src="./src/images/readme/dashboard.png" alt="image" width="155" height="350">
 
-### Product Listings
-<img src="./src/images/readme/store_dashboard.png" alt="image" width="150" height="400">
+### Store Dashboard 📊
+<img src="./src/images/readme/store_dashboard.png" alt="image" width="155" height="350">
 
-### Search and Filtering
-![Search and Filtering](./src/images/readme/search.png)
+### Search and Filtering 📂
+<img src="./src/images/readme/search.png" alt="image" width="155" height="350">
 
-### Inventory Alerts
-![Inventory Alerts](./src/images/readme/product_details.png)
-
-### User Authentication
-![User Authentication](./src/images/readme/signin.png)
+### Inventory Alerts ⛔
+<img src="./src/images/readme/product_details.png" alt="image" width="150" height="350">
 
 <br />
 
@@ -49,5 +48,5 @@ ZOFS InventoTrack App is a user-friendly tool designed to help businesses effici
 - [React Native Paper](https://reactnativepaper.com) - React Native Paper is a high-quality, standard-compliant Material Design library that has you covered in all major use-cases.
   - [React Native Navigation](https://reactnavigation.org) - Navigation refers to the interactions that allow users to navigate across, into, and back out from the different pieces of content within your app
 - [Figma](https://figma.com/) - Figma is a vector graphics editor and prototyping tool which is primarily web-based.
-# InventoTrack
-# InventoTrack
+
+# ZOFS InventoTrack
