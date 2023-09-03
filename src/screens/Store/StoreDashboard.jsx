@@ -101,7 +101,7 @@ export default function StoreDashboard({ route }) {
           <View style={styles.body}>
             <View style={styles.space_between}>
               <Text style={styles.title}>Products</Text>
-              <TouchableOpacity style={styles.space_between_button} onPress={() => { navigation.navigate('search_store_product', {products: liveStore.inventory}) }}>
+              <TouchableOpacity style={styles.space_between_button} onPress={() => { navigation.navigate('search_store_product', { products: liveStore.inventory, sid: store.store_id }) }}>
                 <Search fill={theme.primary} />
               </TouchableOpacity>
             </View>

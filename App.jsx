@@ -20,6 +20,7 @@ import ManageNotificationsScreen from './src/screens/Settings/ManageNotification
 import BarcodeScanner from './src/components/BarcodeScanner';
 import AddProductScanner from './src/screens/Home/Scanners/AddProductScanner';
 import SearchStoreProduct from './src/screens/Store/SearchStoreProduct';
+import ManageTermsScreen from './src/screens/Settings/ManageTermsScreen';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,7 @@ export default class App extends Component {
           >
             <Stack.Screen name='notifications' component={ManageNotificationsScreen} options={{ headerTitle: 'Notifications', headerTitleStyle: { color: theme.primary }, headerStyle: { backgroundColor: theme.background }, gestureEnabled: true }} />
             <Stack.Screen name='manage_settings' component={ManageSettingsScreen} options={{ headerTitle: 'Profile Details', headerTitleStyle: { color: theme.primary }, headerStyle: { backgroundColor: theme.background }, gestureEnabled: true }} />
+            <Stack.Screen name='terms' component={ManageTermsScreen} options={{ headerTitle: 'Terms and Conditions', headerTitleStyle: { color: theme.primary }, headerStyle: { backgroundColor: theme.background }, gestureEnabled: true }} />
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>

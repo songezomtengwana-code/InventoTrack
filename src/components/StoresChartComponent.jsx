@@ -28,7 +28,7 @@ const data = {
 
 export default function StoresChartComponent() {
   return (
-    <Pressable android_ripple={{ color: theme.primary_faint }} >
+    <Pressable android_ripple={{ color: theme.primary_faint }} style={{ borderRadius:10, overflow: 'hidden', backgroundColor: theme.primary_transparent }} >
       <ProgressChart
         data={data}
         width={windowWidth - 50}

@@ -270,6 +270,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         zIndex: 99,
         borderTopRightRadius: 15,
-        borderTopLeftRadius: 15
+        borderTopLeftRadius: 15,
+        elevation: 10
     }
 })
