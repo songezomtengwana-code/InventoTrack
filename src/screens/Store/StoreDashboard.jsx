@@ -92,7 +92,7 @@ export default function StoreDashboard({ route }) {
             <Pressable android_ripple={{ color: theme.grey }} style={styles.new} onPress={() => {
               navigation.navigate('add_store_product', { branchName: liveStore.name, store_id: liveStore.store_id })
             }}>
-              <UpcScan fill={theme.third} />
+              <UpcScan fill={theme.text_dark} />
               <Text style={styles.new_text}> Add A New Product</Text>
             </Pressable>
 
@@ -148,11 +148,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     borderWidth: 1,
-    borderColor: theme.text_dark,
+    borderColor: theme.third,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.light
+    backgroundColor: theme.third
   },
   new_text: {
     color: theme.primary,

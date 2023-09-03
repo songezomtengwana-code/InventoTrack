@@ -10,7 +10,7 @@ const LoadingComponent = ({ text }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setBack(true)
+      
     }, 20000)
   }, [])
 

@@ -9,11 +9,11 @@ import { useNavigation } from '@react-navigation/native';
 import LoadingComponent from '../../components/LoadingComponent';
 
 function EditStoreProduct({ route }) {
+    const { id, product } = route.params
     const navigation = useNavigation()
     const [updatedQuantity, setUpdatedQuantity] = useState("0")
-    const [updatedPrice, setUpdatedPrice] = useState("0");
+    const [updatedPrice, setUpdatedPrice] = useState(product.price);
     const [loading, setLoading] = useState(false)
-    const { id, product } = route.params
     const resolvedQuantityValue = product.quantity.toString()
 
     const submit = () => {

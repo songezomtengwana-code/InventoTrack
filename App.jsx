@@ -44,13 +44,13 @@ export default class App extends Component {
           
           {/* settings options */}
           <Stack.Screen name='barcode_scanner' component={BarcodeScanner} options={{ headerTitle: 'Barcodde Scanner', headerTitleAlign: 'center' }} />
-          <Stack.Screen name='notifications' component={ManageNotificationsScreen} />
           {/* SETTINGS OPTION SCREENS */}
           <Stack.Group
             screenOptions={{
               animationEnabled: true
             }}
           >
+            <Stack.Screen name='notifications' component={ManageNotificationsScreen} options={{ headerTitle: 'Notifications', headerTitleStyle: { color: theme.primary }, headerStyle: { backgroundColor: theme.background }, gestureEnabled: true }} />
             <Stack.Screen name='manage_settings' component={ManageSettingsScreen} options={{ headerTitle: 'Profile Details', headerTitleStyle: { color: theme.primary }, headerStyle: { backgroundColor: theme.background }, gestureEnabled: true }} />
           </Stack.Group>
         </Stack.Navigator>

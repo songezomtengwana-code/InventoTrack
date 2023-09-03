@@ -136,7 +136,15 @@ export function signin(email, password, navigation) {
       } else {
         navigation.navigate('configure')
       }
-    })
+    }).catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert('Warning', 'the email already exists with an account');
+      } else if (error.code === 'auth/invalid-email') {
+        Alert.alert('Invalid Email', 'please check your email formatting');
+      } else {
+        console.error(error);
+      }
+    });
   })
 }
 

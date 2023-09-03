@@ -21,9 +21,9 @@ const StoresScreen = () => {
           </View>
         </ImageBackground>
       </View>
-      <ScrollView style={styles.body}>
+      <View style={styles.body}>
         <StoreComponent />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   )
 }
@@ -42,6 +42,6 @@ const styles = StyleSheet.create({
   },
   body: {
     padding: 15,
-    paddingBottom: 100
+    paddingBottom: 150
   }
 })
