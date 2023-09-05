@@ -20,7 +20,7 @@ export default function CustomHeader() {
                 {authUser.photoURL ? <Image style={styles.nav_icon} source={require('../images/logo_dark.png')} /> : <Image style={styles.nav_icon} source={require('../images/logo_dark.png')} />}
                 <Text style={styles.nav_title}>{activeBusinessAccount.businessName}</Text>
             </View>
-            <TouchableOpacity style={styles.nav_button} touchSoundDisabled={false} >
+            <TouchableOpacity style={styles.nav_button} touchSoundDisabled={false} onPress={() => { navigation.navigate('notifications') }}  >
                 <Bell fill={theme.background} scaleX={1.05} scaleY={1.05} />
             </TouchableOpacity>
         </View>

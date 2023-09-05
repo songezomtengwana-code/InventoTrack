@@ -22,8 +22,8 @@ const chartConfig = {
 };
 
 const data = {
-  labels: ["Swim", "Bike", "Run"], // optional
-  data: [0.4, 0.6, 0.8]
+  labels: ["Stores", "Bike", "Run"], // optional
+  data: [0.5, 0.6, 0.8]
 };
 
 export default function StoresChartComponent() {

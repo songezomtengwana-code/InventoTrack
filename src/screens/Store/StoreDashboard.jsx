@@ -11,6 +11,7 @@ import ProductCard from '../../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
 import { db, firebaseAuth } from '../../services/firebase';
 import Search from 'react-native-bootstrap-icons/icons/search';
+import { Appbar } from 'react-native-paper';
 
 export default function StoreDashboard({ route }) {
   const { store } = route.params
@@ -70,6 +71,12 @@ export default function StoreDashboard({ route }) {
   } else {
     return (
       <>
+        <Appbar.Header>
+          <Appbar.BackAction onPress={() => { navigation.goBack() }} />
+          <Appbar.Content title={liveStore.name} />
+          {/* <Appbar.Action icon="trash" onPress={() => { }} /> */}
+          <Appbar.Action icon="magnify" onPress={() => { navigation.navigate('search_store_product', { products: liveStore.inventory, sid: store.store_id }) }} />
+        </Appbar.Header>
         {fetching ? <LoadingComponent text='Fetching Store Inforation ...' /> : <></>}
         <ScrollView>
           <View style={styles.header}>
@@ -101,9 +108,9 @@ export default function StoreDashboard({ route }) {
           <View style={styles.body}>
             <View style={styles.space_between}>
               <Text style={styles.title}>Products</Text>
-              <TouchableOpacity style={styles.space_between_button} onPress={() => { navigation.navigate('search_store_product', { products: liveStore.inventory, sid: store.store_id }) }}>
+              {/* <TouchableOpacity style={styles.space_between_button}>
                 <Search fill={theme.primary} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             {
               fetching ? <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 50 }}>

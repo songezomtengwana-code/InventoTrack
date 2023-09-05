@@ -32,7 +32,7 @@ export async function createNewStore(config, navigation) {
         console.error('Error creating store:', error);
         throw error;
     }
-}
+} 
 
 /**
  * @param {*} store_id store id to identify which store inventory to update
