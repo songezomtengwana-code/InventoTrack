@@ -7,7 +7,8 @@ import CreateStoreButton from '../../components/CreateStoreButton';
 import StoreStatisticsButton from '../../components/StoreStatisticsButton';
 import CustomHeader from '../../components/CustomHeader';
 import OptionsComponent from '../../components/OptionsComponent';
-import StoresChartComponent from '../../components/StoresChartComponent';
+import StoresChartComponent, { StoresBarGraphComponent } from '../../components/StoresChartComponent';
+import StoresMapComponent from '../../components/StoresMapComponent';
 
 const DashbordScreen = () => {
     const authUser = firebaseAuth.currentUser
