@@ -82,7 +82,7 @@ const SettingsScreen = () => {
                 </View>
                 <CheveronRight fill={theme.black} />
             </Pressable>
-            <Pressable android_ripple={{ color: theme.primary_transparent, }} onPress={() => { }} style={styles.option}>
+            <Pressable android_ripple={{ color: theme.primary_transparent, }} onPress={() => { navigation.navigate('terms') }} style={styles.option}>
                 <View style={styles.horizontal}>
                     <TextLeft fill={theme.primary} />
                     <Text style={{ color: theme.primary_faint, fontSize: 16 }}>Terms & conditions</Text>

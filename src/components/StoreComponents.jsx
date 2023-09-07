@@ -43,12 +43,20 @@ export default function StoreComponent() {
     if (stores.length < 1) {
       getStoreCollection(buid)
     }
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      getStoreCollection(buid)
+    });
+
+    return unsubscribe;
   })
 
   if (stores.length > 0) {
     return (
       <SafeAreaView>
         <FlatList
+          scrollEnabled={true}
+          scrollsToTop={true}
           data={stores}
           renderItem={({ item }) =>
             <Pressable android_ripple={{ color: theme.grey }} style={styles.store} onPress={() => {

@@ -128,9 +128,9 @@ export default function UpdateStoreProduct({ route }) {
                         <Text style={{ color: theme.primary, fontWeight: 'bold' }}>Edit Product</Text>
                     </Pressable>
                     <Pressable
-                        android_ripple={{ color: theme.secondary_faint }}
+                        android_ripple={{ color: theme.light }}
                         style={styles.delete_button}
-                        onPress={() => { delete_store_product(product.id, id, navigation) }}
+                        onPress={() => { setLoading(true); delete_store_product(product.id, id, navigation) }}
                     >
                         <Trash fill={theme.background} />
                     </Pressable>
@@ -270,6 +270,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         zIndex: 99,
         borderTopRightRadius: 15,
-        borderTopLeftRadius: 15
+        borderTopLeftRadius: 15,
+        elevation: 10
     }
 })

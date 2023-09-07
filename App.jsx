@@ -20,6 +20,7 @@ import ManageNotificationsScreen from './src/screens/Settings/ManageNotification
 import BarcodeScanner from './src/components/BarcodeScanner';
 import AddProductScanner from './src/screens/Home/Scanners/AddProductScanner';
 import SearchStoreProduct from './src/screens/Store/SearchStoreProduct';
+import ManageTermsScreen from './src/screens/Settings/ManageTermsScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,8 @@ export default class App extends Component {
   render() {
     return (
       <NavigationContainer>
+
+        
         <Stack.Navigator initialRouteName='signin' screenOptions={{ cardStyle: { backgroundColor: theme.background }, gestureEnabled: true, animationTypeForReplace: 'push', }} >
           <Stack.Screen name="create" component={CreateAccount} options={{ headerShown: false }} />
           <Stack.Screen name="signin" component={SignIn} options={{ headerShown: false }} />
@@ -44,14 +47,15 @@ export default class App extends Component {
           
           {/* settings options */}
           <Stack.Screen name='barcode_scanner' component={BarcodeScanner} options={{ headerTitle: 'Barcodde Scanner', headerTitleAlign: 'center' }} />
-          <Stack.Screen name='notifications' component={ManageNotificationsScreen} />
           {/* SETTINGS OPTION SCREENS */}
           <Stack.Group
             screenOptions={{
               animationEnabled: true
             }}
           >
+            <Stack.Screen name='notifications' component={ManageNotificationsScreen} options={{ headerShown: false, headerTitle: 'Notifications', headerTitleStyle: { color: theme.primary }, headerStyle: { backgroundColor: theme.background }, gestureEnabled: true }} />
             <Stack.Screen name='manage_settings' component={ManageSettingsScreen} options={{ headerTitle: 'Profile Details', headerTitleStyle: { color: theme.primary }, headerStyle: { backgroundColor: theme.background }, gestureEnabled: true }} />
+            <Stack.Screen name='terms' component={ManageTermsScreen} options={{ headerTitle: 'Terms and Conditions', headerTitleStyle: { color: theme.primary }, headerStyle: { backgroundColor: theme.background }, gestureEnabled: true }} />
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>

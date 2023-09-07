@@ -3,9 +3,11 @@ import React, { useState } from 'react'
 import { Badge, Searchbar } from 'react-native-paper'
 import { theme } from '../../utils/theme'
 import BoxArrowRight from 'react-native-bootstrap-icons/icons/box-arrow-right'
+import { useNavigation } from '@react-navigation/native'
 
 export default function SearchStoreProduct({ route }) {
-    const { products } = route.params
+    const navigation = useNavigation()
+    const { products, sid } = route.params
     const [searchQuery, setSearchQuery] = useState('')
     const [inventory, setInventory] = useState(products)
     const [filteredData, setFilteredData] = useState(products);
@@ -24,6 +26,12 @@ export default function SearchStoreProduct({ route }) {
         const updatedArray = [...recentSearches, searchQuery];
         setrecentSearches(updatedArray);
         console.log(recentSearches)
+    }
+
+    function navigateToProduct(product) {
+        navigation.navigate('update_store_product', {
+            product: product, id: sid
+        })
     }
 
     return (
@@ -62,7 +70,7 @@ export default function SearchStoreProduct({ route }) {
                             data={filteredData}
                             keyExtractor={(item) => item.id} // Replace with your document ID field
                             renderItem={({ item }) =>
-                                <TouchableOpacity style={styles.item} android_ripple={theme.grey} onPress={() => { console.log(item.name); }}>
+                                <TouchableOpacity style={styles.item} android_ripple={theme.grey} onPress={() => { navigateToProduct(item) }}>
                                     <Text style={{ color: theme.primary }}>{item.name}</Text>
                                 </TouchableOpacity>
                             } // Replace with your display logic

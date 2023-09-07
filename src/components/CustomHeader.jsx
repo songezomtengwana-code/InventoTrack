@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { theme, windowWidth } from '../utils/theme'
 import Bell from 'react-native-bootstrap-icons/icons/bell'
+import { Button } from 'react-native-paper'
 
 export default function CustomHeader() {
     const navigation = useNavigation()
@@ -20,8 +21,8 @@ export default function CustomHeader() {
                 {authUser.photoURL ? <Image style={styles.nav_icon} source={require('../images/logo_dark.png')} /> : <Image style={styles.nav_icon} source={require('../images/logo_dark.png')} />}
                 <Text style={styles.nav_title}>{activeBusinessAccount.businessName}</Text>
             </View>
-            <TouchableOpacity style={styles.nav_button} touchSoundDisabled={false} >
-                <Bell fill={theme.background} scaleX={1.05} scaleY={1.05} />
+            <TouchableOpacity style={styles.nav_button} touchSoundDisabled={false} onPress={() => { navigation.navigate('notifications') }}  >
+                <Button icon='bell' buttonColor='#00000000' textColor={theme.background}></Button>
             </TouchableOpacity>
         </View>
     )

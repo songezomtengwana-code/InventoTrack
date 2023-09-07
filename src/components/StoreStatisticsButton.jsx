@@ -1,22 +1,41 @@
 import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, Text } from "react-native"
-import { TouchableOpacity } from "react-native"
-import { default as CaretRightFill } from "react-native-bootstrap-icons/icons/caret-right-fill"
 import { View } from "react-native-ui-lib"
-import { activeBusinessAccount, db, firebaseAuth, get_stores } from '../services/firebase'
+import { activeBusinessAccount, db, firebaseAuth } from '../services/firebase'
 import { useNavigation } from '@react-navigation/native'
 import Mailbox from 'react-native-bootstrap-icons/icons/mailbox'
 import Building from 'react-native-bootstrap-icons/icons/building'
 import { theme, windowWidth } from '../utils/theme'
-import { getStoresCount } from '../services/StoresServices'
 import ChevronRight from 'react-native-bootstrap-icons/icons/chevron-right'
 
 export default function StoreStatisticsButton() {
     const authUser = firebaseAuth.currentUser
     const navigation = useNavigation()
     const [storesValue, setStoresValue] = React.useState(0)
+    const [storeCount, setStoreCount] = React.useState(404)
+
+    const get_stores = async () => {
+        try {
+            const businessRef = db.collection('clients').doc(firebaseAuth.currentUser.uid);
+            const storeCollectionRef = businessRef.collection('stores');
+            const storeCollectionSnapshot = await storeCollectionRef.get();
+
+            const storeDataArray = [];
+
+            storeCollectionSnapshot.forEach((storeDoc) => {
+                const storeData = storeDoc.data();
+                storeDataArray.push({ ...storeData });
+                setStoreCount(storeDataArray.length)
+                mockstore = storeDataArray
+                return console.log(storeCount)
+            });
+        } catch (error) {
+            console.error('Error fetching store collection:', error);
+        }
+    }
 
     useEffect(() => {
+        get_stores()
     }, [])
 
     const statistics = [
@@ -24,15 +43,15 @@ export default function StoreStatisticsButton() {
             id: 1,
             name: "Stores",
             route: "stores",
-            value: 1
-        },  
+            value: storeCount
+        },
     ]
 
     function get_stores_count() {
         const uid = firebaseAuth.currentUser.uid;
         const clientsCollectionRef = db.collection(' clients');
         const storesCollectionRef = clientsCollectionRef.doc(uid).collection('stores');
-    
+
         storesCollectionRef.get().then((querySnapshot) => {
             const numberOfDocuments = querySnapshot.size;
             setStoresValue(querySnapshot)
@@ -40,7 +59,7 @@ export default function StoreStatisticsButton() {
             console.error("Error getting subcollection documents: ", error);
             return "NaN"
         });
-    
+
     }
 
     return (

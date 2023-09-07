@@ -32,7 +32,7 @@ export async function createNewStore(config, navigation) {
         console.error('Error creating store:', error);
         throw error;
     }
-}
+} 
 
 /**
  * @param {*} store_id store id to identify which store inventory to update
@@ -119,31 +119,41 @@ export async function get_single_store_product(sid) {
 }
 
 /**
- * @param {*} iid 
- * @param {*} navigation 
- * @param {*} sid 
+ * @param {*} iid item id value
+ * @param {*} navigation navigation moudle to move to the previous activity
+ * @param {*} sid store id 
  */
 export async function delete_store_product(iid, sid, navigation) {
     const businessId = firebaseAuth.currentUser.uid;
     const storeId = sid;
     const itemIdToDelete = iid;
 
-    // Reference to the specific inventory document
-    const inventoryRef = db.collection('clients').doc(businessId)
-        .collection('stores').doc(storeId);
+    try {
+        const docRef = db.collection('clients').doc(businessId).collection('stores').doc(storeId)
 
-    // Delete the item from the array
-    inventoryRef.update({
-        inventory: arrayRemove({ id: itemIdToDelete })
-    })
-        .then(() => {
-            console.log('Item deleted from the array successfully');
-            navigation.goBack()
-            console.log(itemIdToDelete, storeId, businessId)
-        })
-        .catch((error) => {
-            console.error('Error deleting item from array:', error);
-        });
+        const docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+            const data = docSnapshot.data();
+            console.log('data retrieved')
+
+            const indexToDelete = data['inventory'].findIndex(obj => obj.id === itemIdToDelete);
+
+            if (indexToDelete !== -1) {
+                data['inventory'].splice(indexToDelete, 1);
+
+                await docRef.update({ ['inventory']: data['inventory'] });
+                navigation.goBack()
+                console.log('Object deleted successfully.');
+            } else {
+                console.log('Object not found in the array.');
+            }
+        } else {
+            console.log('Document does not exist.');
+        }
+    } catch (error) {
+        console.error('Error deleting object:', error);
+    }
 }
 
 export async function get_stores_count(uid) {

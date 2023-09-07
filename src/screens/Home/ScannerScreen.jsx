@@ -6,9 +6,9 @@ import { launchCamera } from 'react-native-image-picker'
 import { firebaseUploadProductImage, upload_store_product_image, uuid } from '../../services/firebase'
 import { useNavigation } from '@react-navigation/native'
 import LoadingComponent from '../../components/LoadingComponent'
+import { Camera } from 'expo-camera';
 
 // icons
-import Camera from 'react-native-bootstrap-icons/icons/camera-fill'
 import UpcScan from 'react-native-bootstrap-icons/icons/upc-scan'
 import NewProductModal from '../../components/NewProductModal'
 import { environments } from '../../utils/environment'
@@ -33,6 +33,8 @@ function ScannerScreen({ route }) {
     const [disabled, setDisable] = React.useState(false);
     const [visiblity, setVisiblity] = React.useState(true)
     const [response, setResponse] = React.useState(null)
+    const [scanner, setScanner] = React.useState(false)
+    const [scanned, setScanned] = React.useState(false)
     const [image, setImage] = React.useState(environments.product_placeholder)
     const [uid, setUid] = React.useState(null)
     const [productImage, setProductImage] = React.useState(null)
@@ -123,6 +125,10 @@ function ScannerScreen({ route }) {
         updatedAt: Date()
     }
 
+    const handleBarCodeScanned = () => {
+        console.log('barcode scanned successfully')
+    }
+
     const submit = async () => {
         if (!name || !category || !quantity || !price || !barcode || !aisle || !shelf) {
             setDisable(true)
@@ -139,7 +145,7 @@ function ScannerScreen({ route }) {
             <PaperProvider>
                 <View style={styles.screen}>
                     <Text style={styles.title}>Add a new product</Text>
-                    <View style={styles.options}>
+                    {/* <View style={styles.options}>
                         <TouchableOpacity style={styles.button} onPress={upload_product_image}>
                             <Camera fill={theme.third} />
                             <Text style={styles.text}>Take Product Picture</Text>
@@ -157,7 +163,7 @@ function ScannerScreen({ route }) {
                                     />
                                 </View>
                             </View>
-                        ))}
+                        ))} */}
                     {
                         visiblity ? <View>
                             <TextInput
@@ -205,8 +211,8 @@ function ScannerScreen({ route }) {
                                     label={inputs[1].label}
                                     onChangeText={(text) => { setBarcode(text) }}
                                 />
-                                <Pressable style={styles.pair_button} android_ripple={{ color: theme.grey }} onPress={() => {
-                                    navigation.navigate('add_product_scanner')
+                                <Pressable style={styles.pair_button} android_ripple={{ color: theme.third }} onPress={() => {
+                                    setScanner(true)
                                 }}>
                                     <UpcScan fill={theme.primary} />
                                 </Pressable>
@@ -302,10 +308,19 @@ function ScannerScreen({ route }) {
 export default ScannerScreen
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+      },
+      camera: {
+        flex:1,
+        width: 100,
+        height: 100
+    },
     screen: {
         padding: 25,
         flexDirection: 'column',
-        gap: 10,
+        gap: 15,
         minHeight: windowHeight - 2.5
     },
     title: {
@@ -365,13 +380,16 @@ const styles = StyleSheet.create({
     pair: {
         flexDirection: 'row',
         gap: 15,
+        alignItems:'center',
         justifyContent: 'space-between',
     },
     pair_button: {
         width: '15%',
         height: 50,
         borderRadius: 5,
-        borderColor: theme.primary,
+        marginBottom: 15,
+        borderColor: theme.third,
+        backgroundColor: theme.third_faint,
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',

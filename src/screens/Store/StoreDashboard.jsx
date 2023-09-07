@@ -11,6 +11,7 @@ import ProductCard from '../../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
 import { db, firebaseAuth } from '../../services/firebase';
 import Search from 'react-native-bootstrap-icons/icons/search';
+import { Appbar } from 'react-native-paper';
 
 export default function StoreDashboard({ route }) {
   const { store } = route.params
@@ -70,6 +71,12 @@ export default function StoreDashboard({ route }) {
   } else {
     return (
       <>
+        <Appbar.Header>
+          <Appbar.BackAction onPress={() => { navigation.goBack() }} />
+          <Appbar.Content title={liveStore.name} />
+          {/* <Appbar.Action icon="trash" onPress={() => { }} /> */}
+          <Appbar.Action icon="magnify" onPress={() => { navigation.navigate('search_store_product', { products: liveStore.inventory, sid: store.store_id }) }} />
+        </Appbar.Header>
         {fetching ? <LoadingComponent text='Fetching Store Inforation ...' /> : <></>}
         <ScrollView>
           <View style={styles.header}>
@@ -92,7 +99,7 @@ export default function StoreDashboard({ route }) {
             <Pressable android_ripple={{ color: theme.grey }} style={styles.new} onPress={() => {
               navigation.navigate('add_store_product', { branchName: liveStore.name, store_id: liveStore.store_id })
             }}>
-              <UpcScan fill={theme.third} />
+              <UpcScan fill={theme.text_dark} />
               <Text style={styles.new_text}> Add A New Product</Text>
             </Pressable>
 
@@ -101,9 +108,9 @@ export default function StoreDashboard({ route }) {
           <View style={styles.body}>
             <View style={styles.space_between}>
               <Text style={styles.title}>Products</Text>
-              <TouchableOpacity style={styles.space_between_button} onPress={() => { navigation.navigate('search_store_product', {products: liveStore.inventory}) }}>
+              {/* <TouchableOpacity style={styles.space_between_button}>
                 <Search fill={theme.primary} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             {
               fetching ? <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 50 }}>
@@ -148,11 +155,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     borderWidth: 1,
-    borderColor: theme.text_dark,
+    borderColor: theme.third,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.light
+    backgroundColor: theme.third
   },
   new_text: {
     color: theme.primary,
